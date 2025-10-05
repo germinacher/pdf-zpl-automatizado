@@ -1,0 +1,8 @@
+para usar la app una vez instalado el entorno virtual debes seguir los siguentes pasos:
+
+- abrir Simbolo del sistema
+- ir al directorio del programa (por ej: cd C:\Users\usuario\documentos\programajp)
+- ejecutar entorno virtual (por ejemplo, si el entorno virtual se llama env: env\Scripts\activate)
+- poner los archivos pdf que desees convertir en ZPL en la carpeta "entrada"
+- ejecutar el script: python main.py
+- el archivo ZPL estará en salida

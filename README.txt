@@ -1,8 +1,8 @@
 Automatización con python para convertir PDF a ZPL (Imagen con ^GFA).
 
-Este script convierte automaticamente archivos PDF en código ZPL usando imágenes GFA.
+Este script convierte automaticamente la primer página de cada archivo PDF en código ZPL usando imágenes GFA.
 
-Convierte el PDF entero en una imagen y la traduce a código GFA (Zebra Graphic Field ASCII).
+Convierte la primer página del PDF en una imagen y la traduce a código GFA (Zebra Graphic Field ASCII).
 Esto significa que la impresora recibe la etiqueta como una imagen rasterizada, no como texto vectorial.
 
 Requisitos

@@ -59,7 +59,9 @@ pip install -r requirements.txt
 
 - Agregar la carpeta `bin` de Poppler al **PATH** del sistema
 
-### ▶️ Uso
+---
+
+## ▶️ Uso
 
 ### 0️⃣ Elimina los archivos `.txt` de las carpetas `entrada` y `salida` (archivos `.gitkeep`).
 
@@ -78,11 +80,15 @@ python main.py
 salida/
 ```
 
+---
+
 ## ⚙️ Configuración
 
 Puedes ajustar los siguientes parámetros en `main.py`:
 - `dpi`: controla la calidad de la imagen generada
 - `device_width`: ajusta el ancho de la etiqueta según la impresora
+
+---
 
 ## 📝 Notas importantes
 

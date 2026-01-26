@@ -1,39 +1,88 @@
-Automatización con python para convertir PDF a ZPL (Imagen con ^GFA).
+# 📄 Automatización en Python: Conversión de PDF a ZPL (GFA)
 
-Este script convierte automaticamente la primer página de cada archivo PDF en código ZPL usando imágenes GFA.
+Este proyecto automatiza la **conversión de múltiples archivos PDF a ZPL**, generando etiquetas listas para imprimir en impresoras Zebra mediante **imágenes GFA (`^GFA`)**.
 
-Convierte la primer página del PDF en una imagen y la traduce a código GFA (Zebra Graphic Field ASCII).
-Esto significa que la impresora recibe la etiqueta como una imagen rasterizada, no como texto vectorial.
+El script convierte **la primera página de cada PDF** en una imagen y la traduce automáticamente a código ZPL, permitiendo imprimir **muchas etiquetas con un solo comando**.
 
-Requisitos
-1. Tener Python 3 instalado.
+---
 
-2. Crear nuevo entorno virtual con el comando: python -m venv env
+## 🧠 ¿Cómo funciona?
 
-Instalar dependencias: (o utilizar requirements.txt)
-   pip install pdf2image pillow zplgrf
-   pip install pdfplumber
-   
-3. Instalar Poppler en tu sistema (necesario para pdf2image).
-   - Windows: https://github.com/oschwartz10612/poppler-windows/releases/
-   - Agregar directorio de carpeta bin al PATH
+1. Convierte la **primera página de cada PDF** en una imagen (`.png`) usando `pdf2image`.
+2. Transforma esa imagen en código **Zebra Graphic Field ASCII (GFA)** utilizando `zplgrf`.
+3. Genera un archivo **ZPL** que contiene comandos como `^GF` / `~DGR`, los cuales permiten a la impresora renderizar la etiqueta como una **imagen rasterizada**.
 
-4. Ejecutar entorno virtual en el simbolo del sistema, estando en el directorio del programa poner:
-   env\Scripts\activate
+📌 La impresora **no recibe texto vectorial**, sino una réplica exacta del PDF como imagen, garantizando fidelidad visual.
 
-Uso
-0. Borra los archivos .txt de las carpetas de "entrada" y "salida". Los llamados .gitkeep.
-1. Copia tus archivos PDF en la carpeta "entrada".
-2. Ejecuta el script:
-   python main.py 
-3. Los archivos `.zpl` estarán en la carpeta "salida".
+---
 
-Notas
-- Solo procesa la primera página de cada PDF.
-- Puedes ajustar `dpi` y `device_width` en `main.py` para cambiar la calidad/tamaño.
-- El resultado es un archivo ZPL con un objeto gráfico `^GFA`, que replica exactamente el PDF como imagen.
+## 🚀 Características principales
 
-Como funciona el programa?
-1- Convierte todos los PDF a una imagen usando pdf2image (cada primer página de cada PDF se transforma en una imagen .png temporal).
-2- Usa la clase GRF del módulo zplgrf, que sirve para convertir imágenes en formato Zebra Graphic Field (GFA).
-3- Por tanto, el resultado ZPL que genera el script contiene bloques como ~DGR o ^GF, que son los comandos usados para imprimir imágenes en formato GFA.
+- Procesa **múltiples PDFs automáticamente**
+- Convierte PDFs a **archivos ZPL**
+- Flujo optimizado para **impresión masiva**
+- Ideal para entornos de **logística y e-commerce**
+- Ejecutable con **un solo comando**
+
+---
+
+## 📦 Requisitos
+
+### 1️⃣ Python
+- Python **3.x** instalado
+
+### 2️⃣ Entorno virtual
+```bash
+python -m venv env
+
+ Activar el entorno virtual (Windows):
+
+```bash
+env\Scripts\activate
+
+### 3️⃣ Dependencias
+Instalar manualmente:
+```bash
+pip install pdf2image pillow zplgrf pdfplumber
+
+O usando requirements.txt:
+```bash
+pip install -r requirements.txt
+
+### 4️⃣ Poppler (requerido por pdf2image)
+
+- Descargar desde: https://github.com/oschwartz10612/poppler-windows/releases/
+
+- Agregar la carpeta bin de Poppler al PATH del sistema
+
+### ▶️ Uso
+
+### 0️⃣ Elimina los archivos .txt de las carpetas entrada y salida (archivos .gitkeep).
+
+### 1️⃣ Copia los archivos PDF en la carpeta:
+```bash
+entrada/
+
+### 2️⃣ Ejecuta el script:
+```bash
+python main.py
+
+### 3️⃣ Los archivos .zpl generados estarán disponibles en:
+```bash
+salida/
+
+## ⚙️ Configuración
+
+Puedes ajustar los siguientes parámetros en main.py:
+- dpi: controla la calidad de la imagen generada
+- device_width: ajusta el ancho de la etiqueta según la impresora
+
+## 📝 Notas importantes
+
+- El script solo procesa la primera página de cada PDF
+- El ZPL generado contiene objetos gráficos ^GFA
+- El resultado es una réplica exacta del PDF, ideal para etiquetas complejas
+
+## 📈 Caso de uso real
+
+Esta automatización fue diseñada para optimizar la impresión de etiquetas en un entorno de e-commerce con alto volumen, reduciendo drásticamente el tiempo de procesamiento y eliminando pasos manuales repetitivos.

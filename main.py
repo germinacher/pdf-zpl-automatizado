@@ -1,5 +1,3 @@
-
-
 import os
 from pdf2image import convert_from_path
 from zplgrf import GRF

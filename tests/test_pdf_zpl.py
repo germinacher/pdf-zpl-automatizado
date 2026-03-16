@@ -26,8 +26,8 @@ SAMPLE_ZPL = "^XA^GFA,100,100,10,:Z64:abc==^FS^XZ"
 
 class TestPdfToZplContent:
 
-    @patch("pdf_to_zpl.GRF")
-    @patch("pdf_to_zpl.convert_from_path")
+    @patch("main.GRF")
+    @patch("main.convert_from_path")
     def test_retorna_string_zpl(self, mock_convert, mock_grf):
         """La función debe devolver un string que contenga comandos ZPL."""
         mock_convert.return_value = [make_fake_image()]
@@ -45,8 +45,8 @@ class TestPdfToZplContent:
         assert "^XA" in result
         assert "^XZ" in result
 
-    @patch("pdf_to_zpl.GRF")
-    @patch("pdf_to_zpl.convert_from_path")
+    @patch("main.GRF")
+    @patch("main.convert_from_path")
     def test_aplica_escala(self, mock_convert, mock_grf):
         """Con scale_factor != 1.0 debe llamarse a img.resize."""
         img = make_fake_image(400, 600)
@@ -65,8 +65,8 @@ class TestPdfToZplContent:
         args = img.resize.call_args[0][0]  # (new_width, new_height)
         assert args == (200, 300)
 
-    @patch("pdf_to_zpl.GRF")
-    @patch("pdf_to_zpl.convert_from_path")
+    @patch("main.GRF")
+    @patch("main.convert_from_path")
     def test_sin_escala_no_llama_resize(self, mock_convert, mock_grf):
         """Con scale_factor=1.0 no debe redimensionarse la imagen."""
         img = make_fake_image()
@@ -83,8 +83,8 @@ class TestPdfToZplContent:
 
         img.resize.assert_not_called()
 
-    @patch("pdf_to_zpl.GRF")
-    @patch("pdf_to_zpl.convert_from_path")
+    @patch("main.GRF")
+    @patch("main.convert_from_path")
     def test_offset_agrega_fo(self, mock_convert, mock_grf):
         """Con offsets > 0 el ZPL debe incluir el comando ^FO."""
         mock_convert.return_value = [make_fake_image()]
@@ -105,8 +105,8 @@ class TestPdfToZplContent:
 
         assert "^FO" in result
 
-    @patch("pdf_to_zpl.GRF")
-    @patch("pdf_to_zpl.convert_from_path")
+    @patch("main.GRF")
+    @patch("main.convert_from_path")
     def test_sin_offset_no_agrega_fo(self, mock_convert, mock_grf):
         """Con offsets en 0 el ZPL no debe incluir ^FO."""
         mock_convert.return_value = [make_fake_image()]
@@ -134,7 +134,7 @@ class TestPdfToZplContent:
 
 class TestProcesarPdfs:
 
-    @patch("pdf_to_zpl.pdf_to_zpl_content")
+    @patch("main.pdf_to_zpl_content")
     @patch("os.listdir")
     @patch("os.makedirs")
     def test_genera_archivo_combinado(self, mock_makedirs, mock_listdir, mock_content):
@@ -148,15 +148,13 @@ class TestProcesarPdfs:
         with patch("builtins.open", m):
             procesar_pdfs("entrada", "salida")
 
-        # pdf_to_zpl_content debe haberse llamado una vez por PDF
         assert mock_content.call_count == 2
 
-        # Verificar que se intentó escribir el archivo combinado
         handle = m()
         written = "".join(call.args[0] for call in handle.write.call_args_list)
         assert SAMPLE_ZPL in written
 
-    @patch("pdf_to_zpl.pdf_to_zpl_content")
+    @patch("main.pdf_to_zpl_content")
     @patch("os.listdir")
     @patch("os.makedirs")
     def test_sin_pdfs_no_escribe(self, mock_makedirs, mock_listdir, mock_content):
@@ -170,7 +168,7 @@ class TestProcesarPdfs:
 
         mock_content.assert_not_called()
 
-    @patch("pdf_to_zpl.pdf_to_zpl_content")
+    @patch("main.pdf_to_zpl_content")
     @patch("os.listdir")
     @patch("os.makedirs")
     def test_ignora_archivos_no_pdf(self, mock_makedirs, mock_listdir, mock_content):

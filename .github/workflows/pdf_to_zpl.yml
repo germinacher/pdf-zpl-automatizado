@@ -1,0 +1,83 @@
+name: PDF to ZPL
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  test:
+    name: Correr tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar dependencias del sistema (Poppler)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependencias de Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdf2image zplgrf Pillow pytest
+
+      - name: Correr tests
+        run: pytest tests/ -v
+
+  run-script:
+    name: Ejecutar conversión PDF → ZPL
+    runs-on: ubuntu-latest
+    needs: test  # Solo corre si los tests pasan
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar dependencias del sistema (Poppler)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependencias de Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdf2image zplgrf Pillow
+
+      - name: Verificar que existen PDFs en entrada/
+        run: |
+          if [ -z "$(ls -A entrada/*.pdf 2>/dev/null)" ]; then
+            echo "No se encontraron archivos PDF en la carpeta entrada/. Abortando."
+            exit 1
+          fi
+          echo "PDFs encontrados:"
+          ls entrada/*.pdf
+
+      - name: Ejecutar script de conversión
+        run: python main.py
+
+      - name: Subir archivos ZPL como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: etiquetas-zpl
+          path: salida/
+          retention-days: 7

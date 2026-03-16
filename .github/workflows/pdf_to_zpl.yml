@@ -35,6 +35,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install pdf2image zplgrf Pillow pytest
 
+      - name: Diagnóstico
+        run: |
+          echo "=== Archivos .py en el repo ==="
+          find . -type f -name "*.py" | sort
+          echo ""
+          echo "=== Contenido de tests/ ==="
+          ls -la tests/ || echo "La carpeta tests/ no existe"
+
       - name: Correr tests
         run: pytest tests/ -v
 
